@@ -11,6 +11,9 @@ Grafo::Grafo(string nomArch){
         cout <<"Error al abrir el archivo..."<<endl;
         exit(1);
     }
+    //Comentario Mg
+
+    
     //Obtener el numero de vertices
     getline(arch,cad);
     numV = stoi(cad);
