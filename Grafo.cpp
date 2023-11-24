@@ -10,7 +10,7 @@ Grafo::Grafo(string nomArch){
     if(arch.fail()){
         cout <<"Error al abrir el archivo..."<<endl;
         exit(1);
-    }
+    }    
     //Obtener el numero de vertices
     getline(arch,cad);
     numV = stoi(cad);
