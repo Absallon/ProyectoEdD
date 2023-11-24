@@ -6,8 +6,8 @@
 using namespace std;
 
 int main(){
-    Grafo g("grafo1.txt");
-    Vertice v("Queretaro");
+    Grafo g("SubestacionesCFE.txt");
+    //Vertice v("Queretaro");
     g.muestraListaVertices();
     g.muestraMatrizAdj();
     g.busquedaProf(v);
