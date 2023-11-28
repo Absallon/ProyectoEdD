@@ -20,6 +20,7 @@ class Grafo{
         void busquedaProf(Vertice vi);
         void recorridoAnch(Vertice vi);
         void recorridos();
+        void Prim(Vertice vi);
 };
 
 #endif
