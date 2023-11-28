@@ -179,10 +179,12 @@ void Grafo::recorridos(){
     Vertice v = ListaV[0];
     recorridoAnch(v);
 }
-void Grafo::Prim(){
-   
-}
-
-
-    
+void Grafo::Prim(Vertice vi){
+   if(vi.getNom() == ""){
+        cout << "El vertice origen no existe" << endl;
+        return;
+    }
+    while(vi.getNom()!=""){
+        
+    }
 }
