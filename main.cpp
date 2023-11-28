@@ -12,6 +12,7 @@ int main(){
     g.muestraMatrizAdj();
     //vertice de partida
     string verticePartida="EzequelMontes";
+    Vertice v(verticePartida);
     //g.Prim(verticePartida);
 
 
