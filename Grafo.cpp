@@ -180,8 +180,7 @@ void Grafo::recorridos(){
     recorridoAnch(v);
 }
 void Grafo::Prim(){
-   int *costos;
-    
+   
 }
 
 
