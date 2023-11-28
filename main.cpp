@@ -10,7 +10,14 @@ int main(){
     //Vertice v("Queretaro");
     g.muestraListaVertices();
     g.muestraMatrizAdj();
-    g.busquedaProf(v);
+    //vertice de partida
+    string verticePartida="EzequelMontes";
+    //g.Prim(verticePartida);
+
+
+
+    
+    /*g.busquedaProf(v);
     g.muestraListaVertices();
     g.recorridos();
     /*
