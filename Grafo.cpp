@@ -179,3 +179,11 @@ void Grafo::recorridos(){
     Vertice v = ListaV[0];
     recorridoAnch(v);
 }
+void Grafo::Prim(){
+   int *costos;
+    
+}
+
+
+    
+}
