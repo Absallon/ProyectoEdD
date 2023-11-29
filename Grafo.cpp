@@ -138,9 +138,51 @@ void Grafo::recorridoAnch(Vertice vi){
 }
 
 void Grafo::recorridos(){
-    Vertice v = ListaV[0];
-    recorridoAnch(v);
+    //Antiguo metodo de recorridos
+    //Vertice v = ListaV[0];
+    //recorridoAnch(v);
+    //Nuevo metodo de recorridos
+    int i;
+    char c;
+    cout<<"Entre los recorridos de Anchura y Profundidad, escoge uno escribiendo la primer letra del mismo: ";
+    cin>>c;
+    cout<<"Ahora ingresa el indice del vertice inicial: ";
+    cin>>i;
+    Vertice v = ListaV[i];
+    switch (c){
+        case 'a':
+            recorridoAnch(v);
+            break;
+
+        case 'p':
+            recorridoProf(i);
+            break;
+        
+        default:
+            cout<<"¡ERROR! El valor ingresado no fue el correcto, terminando el metodo"<<endl;
+            break;
+    }
+    //Metodos de recorrido
+    //recorridoAnch(v);
+    //recorridoProf(i);
+    //busquedaProf(v);
 }
+
+void Grafo::recorridoProf(int i){
+    //cout <<"Valor inicial de i = "<<i<<endl;
+    ListaV[i].setVisitado();
+    cout <<"Vertice visitado: "<<ListaV[i].getNom()<<endl;
+    for(int j=0;j<numV;j++){
+        //cout <<"j = "<<j<<", visitado = "<<ListaV->getVisitado()<<endl;
+        //cout <<"Visitado = "<<ListaV[j].getVisitado()<<", matAdj = "<<matAdj[i][j]<<", i="<<i<<", j="<<j<<endl;
+        if(matAdj[i][j]!=0 && ListaV[j].getVisitado() != true){
+            recorridoProf(j);
+            //ListaV[j].setVisitado();
+        }
+    }    
+}
+
+//PRIM ITERATIVO
 void Grafo::Prim(Vertice vi){
    if(vi.getNom() == ""){
         cout << "El vertice origen no existe" << endl;
@@ -185,24 +227,41 @@ void Grafo::Prim(Vertice vi){
         }
         //Impresion de resultados
         //Peso de cada arista
+        cout<<"--------------------"<<endl;
+         cout<<"----- ARISTAS -----"<<endl;
         for(int i = 0;i<numV-1;i++){
-            cout<<"El peso de la lista de aristas en la posicion "<<i<<" es: "<<listaPesos[i]<<endl;
+            cout<<"----------"<<endl;
+            cout<<"El peso de la arista numero "<<i+1<<" es: "<<listaPesos[i]<<"km"<<endl;
+            cout<<"Esa arista va desde el vertice '"<<NombreVerticesAristas[i]<<"' hasta el vertice '"<<NombreVerticesAristas[i+1]<<"'"<<endl;
+            cout<<"o bien los indices de los vertices de la arista son: "<<listaAristas[i]<<" - "<<listaAristas[i+1]<<endl;
+            cout<<"----------"<<endl;
             pesoTotal+=listaPesos[i];
         }
         //Peso total
-        cout<<"El peso total del recorrido de Prim es: "<<pesoTotal<<endl;
+        cout<<"--------------------"<<endl;
+        cout<<"----- PESO TOTAL Y COSTO -----"<<endl;
+        cout<<"El peso total del recorrido de Prim es: "<<pesoTotal<<"km"<<endl;
+        double precio=(pesoTotal*10)*1200;
+        cout.precision(4);
+        cout<<fixed<<"El costo total del cableado seria: $"<<precio<<endl;
+        cout.precision(0);
         //Numero de vertices en orden del recorrido
+        cout<<"--------------------"<<endl;
+        cout<<"----- INDICES DE LOS VERTICES -----"<<endl;
         cout<<"El numero de las vertices de la lista de aristas de acuerdo al recorrido es: "<<endl;
         for(int i = 0;i<numV;i++){
             if(i==numV-1) cout<<listaAristas[i]+1<<endl;
             else cout<<listaAristas[i]+1<<" - ";
         }
         //El nombre de los vertices en orden del recorrido
+        cout<<"--------------------"<<endl;
+        cout<<"----- NOMBRE DE LOS VERTICES -----"<<endl;
         cout<<"El nombre de los vertices de la lista de aristas de acuerdo al recorrido es: "<<endl;
         for(int i = 0;i<numV;i++){
             if(i==numV-1) cout<<NombreVerticesAristas[i]<<endl;
             else cout<<NombreVerticesAristas[i]<<" - ";            
         }
+        cout<<"--------------------"<<endl;
     }
     //int* pesoMin=new int [];
 }
