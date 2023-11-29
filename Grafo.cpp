@@ -138,6 +138,19 @@ void Grafo::busquedaProf(Vertice vi){
     diferente de 0
     si lo encuentra verificar si no visitado
     */
+
+    /*
+    int i = buscar(vi.getNom());
+    if( i>=0 && !!ListaV[i].getVisitado()){
+        for(int j = 0;  j <numV; j++){
+            if(matAdj[i][j] ! = 0 && !ListaV[j].getVisitado()){
+                busquedaProf(ListaV[j]);
+            }
+        }
+    }
+    */
+
+    
     i=buscar(vi.getNom());
     j=0;
     bool salir = false;
