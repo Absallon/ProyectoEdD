@@ -200,4 +200,5 @@ void Grafo::Prim(Vertice vi){
     while(vi.getNom()!=""){
         
     }
+    int* pesoMin=new int [];
 }
