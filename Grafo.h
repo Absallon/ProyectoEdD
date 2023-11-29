@@ -5,7 +5,8 @@
 #include "Cola.h"
 
 class Grafo{
-    int **matAdj;
+    //int **matAdj;
+    double **matAdj;
     Vertice *ListaV;
     int numV;
     fstream arch;
