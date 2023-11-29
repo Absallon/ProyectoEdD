@@ -198,7 +198,55 @@ void Grafo::Prim(Vertice vi){
         return;
     }
     while(vi.getNom()!=""){
-        
+        double pesoTotal,listaPesos[6],listaAristas[7],auxiliar=0;
+        string NombreVerticesAristas[7];
+        int entrada,posArista=0,indiceVisitado,ultimoindice;
+        //Obtener indice del vertice de entrada
+        for(int a=0;a<numV;a++){
+            if(vi.getNom()==ListaV[a].getNom()){
+                entrada=a;                
+            }
+        }
+        NombreVerticesAristas[0]=vi.getNom();
+        listaAristas[0]=entrada;
+        ListaV[entrada].setVisitado();
+        indiceVisitado=entrada;
+        while(posArista<numV-1){
+            for(int j=0;j<numV;j++){            
+                if((ListaV[j].getVisitado()==false && matAdj[indiceVisitado][j]<auxiliar && matAdj[indiceVisitado][j]!=0) || (auxiliar == 0 && matAdj[indiceVisitado][j]!=0 && ListaV[j].getVisitado()==false)){ 
+                    /*
+                    Verifico si el peso dentro de la posicion i,j de la matriz de adyacencias es menor que la variable auxiliar
+                    debido a su funcionamiento nos quedaremos con el valor que cumpla dichas caracteristicas al final, nos quedaremos con ese en la lista de aristas
+                    y tambien con el indice en el que se encontro
+                    */                    
+                    auxiliar=matAdj[indiceVisitado][j];
+                    listaPesos[posArista]=matAdj[indiceVisitado][j]; //Asigno el ultimo valor encontrado a la lista de aristas
+                    ultimoindice=j;
+                }
+            }
+            indiceVisitado=ultimoindice;
+            NombreVerticesAristas[posArista+1]=ListaV[indiceVisitado].getNom();
+            listaAristas[posArista+1]=indiceVisitado;
+            ListaV[indiceVisitado].setVisitado(); //Hago que el vertice en la posicion de indiceVisitado, sea visitado
+            posArista++; //Con 'i' recorremos las filas de la matriz
+            auxiliar=0;
+        }
+        pesoTotal=0;
+        for(int i = 0;i<numV-1;i++){
+            cout<<"El peso de la lista de aristas en la posicion "<<i<<" es: "<<listaPesos[i]<<endl;
+            pesoTotal+=listaPesos[i];
+        }
+        cout<<"El peso total es: "<<pesoTotal<<endl;
+        cout<<"El numero de las aristas de la lista de aristas es: "<<endl;
+        for(int i = 0;i<numV;i++){
+            if(i==numV-1) cout<<listaAristas[i]+1<<endl;
+            else cout<<listaAristas[i]+1<<" - ";            
+        }
+        cout<<"El nombre de los vertices de la lista de aristas es: "<<endl;
+        for(int i = 0;i<numV;i++){
+            if(i==numV-1) cout<<NombreVerticesAristas[i]<<endl;
+            else cout<<NombreVerticesAristas[i]<<" - ";            
+        }
     }
-    int* pesoMin=new int [];
+    //int* pesoMin=new int [];
 }
