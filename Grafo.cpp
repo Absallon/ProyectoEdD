@@ -16,10 +16,21 @@ Grafo::Grafo(string nomArch){
     numV = stoi(cad);
     //Crear lista de vertices
     ListaV = new Vertice[numV];
-    //crear la matriz e inicializar
+    //crear la matriz e inicializar si los valores son enteros
+    /*
     matAdj = new int*[numV];
     for(int i = 0;i<numV;i++){
         matAdj[i] = new int[numV];
+        for(int j=0;j<numV;j++){
+            matAdj[i][j]=0;
+        }
+    }
+    */
+    //crear la matriz e inicializar si los valores son decimales
+    
+    matAdj = new double*[numV];
+    for(int i = 0;i<numV;i++){
+        matAdj[i] = new double[numV];
         for(int j=0;j<numV;j++){
             matAdj[i][j]=0;
         }
@@ -44,7 +55,8 @@ int Grafo::buscar(string s){
 }
 void Grafo::generaMatrizAdj(){
     string cad;
-    int i=0,peso,posAsterisco=0,j;
+    int i=0,/*peso,*/posAsterisco=0,j;
+    double peso;
     string origen,destino,p,temp;
     while(!arch.eof()){
         getline(arch,cad);
@@ -57,7 +69,8 @@ void Grafo::generaMatrizAdj(){
         destino = cad.substr(posAsterisco,cad.find("*",posAsterisco)-posAsterisco);
         //cout <<"Destino: "<<destino<<endl;
         posAsterisco=cad.find("*",posAsterisco)+1;        
-        peso=stoi(cad.substr(posAsterisco));
+        //peso=stoi(cad.substr(posAsterisco));
+        peso=stod(cad.substr(posAsterisco));
         //cout <<"Peso: "<<peso<<endl;
         i=buscar(origen);
         //cout <<"I: "<<i<<endl;
@@ -68,50 +81,6 @@ void Grafo::generaMatrizAdj(){
             cout <<"Error en nombres de vertices"<<endl;
             exit(1);
         }
-        //origen = destino = peso = cad = "";
-
-        /*
-        //Otra posible forma para hacerlo
-        for(i=0;i<cad.length();i++){
-            if(cad[i]!='*'){
-                temp += cad[i];
-            }
-            else{
-                numA++;
-                switch(numA){
-                    case 1:
-                        origen = temp;
-                        temp = "";
-                        break;
-                }
-            }
-        }
-        p = temp;
-        */
-        /*
-        //Forma en que lo estaba haciendo yo
-        for(int j=0;cad.substr(posAsterisco,cad.find("*",posAsterisco)-posAsterisco)=="";j++){
-            if(i==0){
-                posAsterisco=cad.find("*");
-                origen = cad.substr(0,posAsterisco-1);
-                matAdj[i][j]=posAsterisco;
-            }
-            else if (i==1){
-                destino = cad.substr(posAsterisco,cad.find("*",posAsterisco+1)-posAsterisco-1);
-                posAsterisco = cad.find("*",posAsterisco+1);
-                matAdj[i][j]=posAsterisco;
-            }
-            else{
-                peso = stoi(cad.substr(posAsterisco));
-                posAsterisco=cad.find("0");
-                matAdj[i][j]=peso;
-            }
-            i++;
-            if(cad.substr(posAsterisco)=="0"){
-                i=0;
-            }    
-        } 
-        */               
     }
 }
 void Grafo::muestraListaVertices(){
@@ -131,26 +100,7 @@ void Grafo::muestraMatrizAdj(){
 void Grafo::busquedaProf(Vertice vi){
     int i,j;
     vi.setVisitado(); //Altera su valor por el contrario
-    //vi.setVisitado(true); //Asigna con sobrecarga
-    /*
-    buscar posicion de vi
-    ir a renglon en matAdj y buscar un valor
-    diferente de 0
-    si lo encuentra verificar si no visitado
-    */
-
-    /*
-    int i = buscar(vi.getNom());
-    if( i>=0 && !!ListaV[i].getVisitado()){
-        for(int j = 0;  j <numV; j++){
-            if(matAdj[i][j] ! = 0 && !ListaV[j].getVisitado()){
-                busquedaProf(ListaV[j]);
-            }
-        }
-    }
-    */
-
-    
+    //vi.setVisitado(true); //Asigna con sobrecarga        
     i=buscar(vi.getNom());
     j=0;
     bool salir = false;
@@ -173,10 +123,9 @@ void Grafo::recorridoAnch(Vertice vi){
     c.enqueue(ListaV[i]);
     while(c.first().getNom() != ""){
         vi = c.dequeue();
-        cout << vi.getNom() << endl;
-        //cout << c.dequeue().getNom() << endl;
+        cout << vi.getNom() << endl;        
         i = buscar(vi.getNom());
-        for(int k = 0;k<numV;k++){ //&& matAdj[i][k]!=0;k++){
+        for(int k = 0;k<numV;k++){ 
             if(matAdj[i][k]!=0){
             //if(k<numV){
                 if(ListaV[k].getVisitado() != true){
@@ -198,7 +147,8 @@ void Grafo::Prim(Vertice vi){
         return;
     }
     while(vi.getNom()!=""){
-        double pesoTotal,listaPesos[6],listaAristas[7],auxiliar=0;
+        //Declaro los arreglos de las aristas y los vertices que conforman al recorrido, ademas de inicializar algunas variables
+        double pesoTotal=0,listaPesos[6],listaAristas[7],auxiliar=0;
         string NombreVerticesAristas[7];
         int entrada,posArista=0,indiceVisitado,ultimoindice;
         //Obtener indice del vertice de entrada
@@ -207,42 +157,48 @@ void Grafo::Prim(Vertice vi){
                 entrada=a;                
             }
         }
+        //Asignamos el vertice del argumento a los arreglos de los vertices que conforman al recorrido
         NombreVerticesAristas[0]=vi.getNom();
         listaAristas[0]=entrada;
-        ListaV[entrada].setVisitado();
-        indiceVisitado=entrada;
+        ListaV[entrada].setVisitado(); //Ponemos al vertice inicial como visitado
+        indiceVisitado=entrada; //Movemos el indice al del vertice inicial
         while(posArista<numV-1){
             for(int j=0;j<numV;j++){            
-                if((ListaV[j].getVisitado()==false && matAdj[indiceVisitado][j]<auxiliar && matAdj[indiceVisitado][j]!=0) || (auxiliar == 0 && matAdj[indiceVisitado][j]!=0 && ListaV[j].getVisitado()==false)){ 
+                //if((ListaV[j].getVisitado()==false && matAdj[indiceVisitado][j]<auxiliar && matAdj[indiceVisitado][j]!=0) || (auxiliar == 0 && matAdj[indiceVisitado][j]!=0 && ListaV[j].getVisitado()==false)){ 
+                if((matAdj[indiceVisitado][j]<auxiliar || auxiliar == 0) && matAdj[indiceVisitado][j]!=0 && ListaV[j].getVisitado()==false){ 
                     /*
-                    Verifico si el peso dentro de la posicion i,j de la matriz de adyacencias es menor que la variable auxiliar
-                    debido a su funcionamiento nos quedaremos con el valor que cumpla dichas caracteristicas al final, nos quedaremos con ese en la lista de aristas
-                    y tambien con el indice en el que se encontro
+                    Este if tiene un OR para cuando se ingrese con el primer valor de la variable auxiliar o si el valor dentro de la matriz de adyacencias en i,j es menor al de la variable auxiliar
+                    las condiciones AND son por si trata de agarrar el valor de 0 dentro de la matriz de adyacencias y para verificar que el vertice no ha sido visitado
+                    debido a su funcionamiento nos quedaremos con el valor que cumpla dichas caracteristicas al final
                     */                    
-                    auxiliar=matAdj[indiceVisitado][j];
-                    listaPesos[posArista]=matAdj[indiceVisitado][j]; //Asigno el ultimo valor encontrado a la lista de aristas
-                    ultimoindice=j;
+                    auxiliar=matAdj[indiceVisitado][j]; //Tomamos el ultimo valor que cumple con las condiciones
+                    listaPesos[posArista]=matAdj[indiceVisitado][j]; //Asigno el ultimo valor encontrado a la lista de pesos de las aristas
+                    ultimoindice=j; //Tomamos el ultimo indice del vertice que cumplio con las condiciones
                 }
             }
-            indiceVisitado=ultimoindice;
-            NombreVerticesAristas[posArista+1]=ListaV[indiceVisitado].getNom();
-            listaAristas[posArista+1]=indiceVisitado;
-            ListaV[indiceVisitado].setVisitado(); //Hago que el vertice en la posicion de indiceVisitado, sea visitado
-            posArista++; //Con 'i' recorremos las filas de la matriz
-            auxiliar=0;
+            indiceVisitado=ultimoindice; //Movemos el indice del ultimo vertice al nuevo valor
+            NombreVerticesAristas[posArista+1]=ListaV[indiceVisitado].getNom(); //Agregamos el nombre del vertice al arreglo del nombre de los vertices que conforman a las aristas de menor valor
+            listaAristas[posArista+1]=indiceVisitado; //Agregamos el indice del vertice al arreglo de las aristas de menor valor
+            ListaV[indiceVisitado].setVisitado(); //Hago que el vertice en la posicion del indice, sea visitado
+            posArista++; //Con 'posArista' recorremos todo el arreglo de las aristas de menor valor
+            auxiliar=0; //Reiniciamos el valor de la variable auxiliar a 0
         }
-        pesoTotal=0;
+        //Impresion de resultados
+        //Peso de cada arista
         for(int i = 0;i<numV-1;i++){
             cout<<"El peso de la lista de aristas en la posicion "<<i<<" es: "<<listaPesos[i]<<endl;
             pesoTotal+=listaPesos[i];
         }
-        cout<<"El peso total es: "<<pesoTotal<<endl;
-        cout<<"El numero de las aristas de la lista de aristas es: "<<endl;
+        //Peso total
+        cout<<"El peso total del recorrido de Prim es: "<<pesoTotal<<endl;
+        //Numero de vertices en orden del recorrido
+        cout<<"El numero de las vertices de la lista de aristas de acuerdo al recorrido es: "<<endl;
         for(int i = 0;i<numV;i++){
             if(i==numV-1) cout<<listaAristas[i]+1<<endl;
-            else cout<<listaAristas[i]+1<<" - ";            
+            else cout<<listaAristas[i]+1<<" - ";
         }
-        cout<<"El nombre de los vertices de la lista de aristas es: "<<endl;
+        //El nombre de los vertices en orden del recorrido
+        cout<<"El nombre de los vertices de la lista de aristas de acuerdo al recorrido es: "<<endl;
         for(int i = 0;i<numV;i++){
             if(i==numV-1) cout<<NombreVerticesAristas[i]<<endl;
             else cout<<NombreVerticesAristas[i]<<" - ";            
