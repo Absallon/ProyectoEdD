@@ -263,5 +263,5 @@ void Grafo::Prim(Vertice vi){
         }
         cout<<"--------------------"<<endl;
     }
-    //int* pesoMin=new int [];
+  
 }
