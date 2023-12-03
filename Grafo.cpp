@@ -188,11 +188,15 @@ void Grafo::Prim(Vertice vi){
         cout << "El vertice origen no existe" << endl;
         return;
     }
+
+        /* int entrada,posArista=0,indiceVisitado,ultimoindice; */
+
     while(vi.getNom()!=""){
         //Declaro los arreglos de las aristas y los vertices que conforman al recorrido, ademas de inicializar algunas variables
         double pesoTotal=0,listaPesos[6],listaAristas[7],auxiliar=0;
         string NombreVerticesAristas[7];
         int entrada,posArista=0,indiceVisitado,ultimoindice;
+        
         //Obtener indice del vertice de entrada
         for(int a=0;a<numV;a++){
             if(vi.getNom()==ListaV[a].getNom()){
